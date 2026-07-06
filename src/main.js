@@ -8,7 +8,8 @@ const STYLES = {
   night: 'https://tiles.openfreemap.org/styles/dark',
 };
 
-// 높이(m) → 색. 낮: 밝은 회청색에서 고층부 앰버, 밤: 어두운 네이비에서 발광 앰버.
+// Height (m) → color. Day: light blue-gray fading to amber on high-rises.
+// Night: dark navy rising to glowing amber.
 const BUILDING_PAINT = {
   day: [
     'interpolate', ['linear'], ['get', 'render_height'],
@@ -44,15 +45,15 @@ map.addControl(
   'top-right'
 );
 
-// 디버깅/검증용 전역 노출
+// Exposed globally for debugging
 window.__map = map;
 
-// ---------------------------------------------------------------- 3D 건물
+// ---------------------------------------------------------------- 3D buildings
 
 function addBuildingLayer() {
   const style = map.getStyle();
 
-  // 스타일에 내장된 기존 3D 건물 레이어는 숨기고 커스텀 레이어로 대체
+  // Hide the style's built-in 3D building layers; we replace them with our own
   for (const layer of style.layers) {
     if (layer.type === 'fill-extrusion') {
       map.setLayoutProperty(layer.id, 'visibility', 'none');
@@ -64,7 +65,7 @@ function addBuildingLayer() {
   );
   if (!sourceName) return;
 
-  // 라벨 아래에 삽입해 지명이 건물에 가려지지 않게 함
+  // Insert below label layers so place names stay visible above buildings
   const labelLayerId = style.layers.find(
     (l) => l.type === 'symbol' && l.layout?.['text-field']
   )?.id;
@@ -92,10 +93,10 @@ function addBuildingLayer() {
   );
 }
 
-// 초기 로드와 setStyle 이후 모두 발화
+// Fires on initial load and after every setStyle
 map.on('style.load', addBuildingLayer);
 
-// ---------------------------------------------------------------- 랜드마크
+// ---------------------------------------------------------------- Landmarks
 
 const listEl = document.getElementById('landmark-list');
 const cardEl = document.getElementById('info-card');
@@ -153,7 +154,7 @@ for (const lm of LANDMARKS) {
     .addTo(map);
 }
 
-// ---------------------------------------------------------------- 카메라 모드
+// ---------------------------------------------------------------- Camera modes
 
 const cameraButtons = document.querySelectorAll('#camera-controls button');
 
@@ -168,7 +169,7 @@ function startOrbit() {
   const spin = (now) => {
     const dt = now - last;
     last = now;
-    map.setBearing(map.getBearing() + dt * 0.004); // 약 15초에 한 바퀴의 1/4 느낌으로 잔잔하게
+    map.setBearing(map.getBearing() + dt * 0.004); // ~4°/s — one full turn in ~90 s
     orbitFrame = requestAnimationFrame(spin);
   };
   orbitFrame = requestAnimationFrame(spin);
@@ -197,7 +198,7 @@ cameraButtons.forEach((btn) => {
   });
 });
 
-// 사용자가 직접 조작하면 궤도 모드 해제
+// Leave orbit mode as soon as the user interacts directly
 for (const ev of ['mousedown', 'touchstart', 'wheel']) {
   map.getCanvas().addEventListener(ev, () => {
     if (cameraMode === 'orbit') {
@@ -207,7 +208,7 @@ for (const ev of ['mousedown', 'touchstart', 'wheel']) {
   }, { passive: true });
 }
 
-// ---------------------------------------------------------------- 낮/밤 토글
+// ---------------------------------------------------------------- Day / night
 
 const themeButtons = document.querySelectorAll('#theme-controls button');
 
@@ -218,7 +219,7 @@ themeButtons.forEach((btn) => {
     theme = next;
     themeButtons.forEach((b) => b.classList.toggle('active', b.dataset.theme === theme));
     document.body.classList.toggle('night', theme === 'night');
-    // setStyle은 커스텀 레이어를 날리므로 style.load 핸들러가 재추가한다
+    // setStyle drops custom layers; the style.load handler re-adds them
     map.setStyle(STYLES[theme]);
   });
 });
