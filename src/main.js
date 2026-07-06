@@ -229,8 +229,6 @@ cityButtons.forEach((btn) => {
   });
 });
 
-setCity(cityId, { fly: false });
-
 // ---------------------------------------------------------------- Camera modes
 
 const cameraButtons = document.querySelectorAll('#camera-controls button');
@@ -300,3 +298,8 @@ themeButtons.forEach((btn) => {
     map.setStyle(STYLES[theme]);
   });
 });
+
+// ---------------------------------------------------------------- Bootstrap
+
+// Must run last — setCity touches the camera and theme controls above
+setCity(cityId, { fly: false });
