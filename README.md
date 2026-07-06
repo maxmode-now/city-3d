@@ -6,13 +6,14 @@ Ships with Seoul and New York — and [adding your own city is a one-file edit](
 
 **Deep links:** [Seoul](https://maxmode-now.github.io/seoul-3d-map/) · [New York](https://maxmode-now.github.io/seoul-3d-map/?city=nyc)
 
-![Seoul 3D](docs/screenshot.png)
+![City 3D demo — Seoul to New York auto tour](docs/demo.gif)
 
 ## ✨ Features
 
 - **Multi-city** — Seoul and New York built in, switchable in the UI with shareable `?city=` deep links; add any city by editing one file
 - **3D building rendering** — fill-extrusion driven by OSM `render_height`, with a height-based color ramp (Lotte World Tower rises to its real 555 m, One WTC to 541 m)
 - **Landmark tour** — one-click cinematic fly-to with info cards for 7 landmarks per city, from Gyeongbokgung Palace to the Brooklyn Bridge
+- **Auto tour** — hit ▶ and the camera flies itself from landmark to landmark with a slow cinematic drift at each stop
 - **Camera modes** — free view / orbit (auto-rotate) / top-down
 - **Day / night modes** — switches between the liberty (day) and dark (night) styles; at night, high-rises glow amber
 - **Zero-dependency deploy** — no API keys, no backend; the static build goes straight to GitHub Pages
@@ -48,6 +49,8 @@ npm run build    # static build in dist/
 │   ├── main.js           # Map init, 3D layer, camera modes, city/theme switching
 │   ├── cities.js         # City + landmark data (coordinates, camera angles, descriptions)
 │   └── style.css         # Dark navy + amber theme
+├── tools/
+│   └── record-gif.mjs    # Records the README demo GIF in headless Chrome
 └── .github/workflows/    # GitHub Pages auto-deploy
 ```
 
@@ -66,6 +69,10 @@ tokyo: {
 ```
 
 Cities with good OSM building-height coverage (New York, Tokyo, Chicago, Hong Kong, Berlin…) look best. Pull requests adding cities are welcome.
+
+## 📸 Screenshot
+
+![Seoul 3D — Lotte World Tower over Seokchon Lake](docs/screenshot.png)
 
 ## 📝 About the Data
 

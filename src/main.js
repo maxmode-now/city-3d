@@ -180,13 +180,19 @@ function renderLandmarks(city) {
     const li = document.createElement('li');
     li.dataset.id = lm.id;
     li.innerHTML = `<span class="dot"></span>${lm.name}`;
-    li.addEventListener('click', () => flyToLandmark(lm));
+    li.addEventListener('click', () => {
+      stopTour();
+      flyToLandmark(lm);
+    });
     listEl.appendChild(li);
 
     const markerEl = document.createElement('div');
     markerEl.className = 'lm-marker';
     markerEl.title = lm.name;
-    markerEl.addEventListener('click', () => flyToLandmark(lm));
+    markerEl.addEventListener('click', () => {
+      stopTour();
+      flyToLandmark(lm);
+    });
     markers.push(
       new maplibregl.Marker({ element: markerEl, anchor: 'center' })
         .setLngLat(lm.coords)
@@ -218,6 +224,7 @@ function setCity(id, { fly = true } = {}) {
 
   renderLandmarks(city);
   hideCard();
+  stopTour();
   stopOrbit();
   setCameraMode('free');
   if (fly) map.flyTo({ ...city.view, maxDuration: 6000, essential: true });
@@ -259,6 +266,7 @@ function stopOrbit() {
 
 cameraButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
+    stopTour();
     const mode = btn.dataset.mode;
     setCameraMode(mode);
     if (mode === 'orbit') {
@@ -273,15 +281,60 @@ cameraButtons.forEach((btn) => {
   });
 });
 
-// Leave orbit mode as soon as the user interacts directly
+// Leave orbit/tour mode as soon as the user interacts directly
 for (const ev of ['mousedown', 'touchstart', 'wheel']) {
   map.getCanvas().addEventListener(ev, () => {
+    stopTour();
     if (cameraMode === 'orbit') {
       stopOrbit();
       setCameraMode('free');
     }
   }, { passive: true });
 }
+
+// ---------------------------------------------------------------- Auto tour
+
+const tourBtn = document.getElementById('tour-btn');
+const TOUR_STOP_MS = 8000;
+let tourTimer = null;
+let tourIndex = 0;
+let touring = false;
+
+function visitNextStop() {
+  const { landmarks } = CITIES[cityId];
+  const lm = landmarks[tourIndex % landmarks.length];
+  tourIndex++;
+  flyToLandmark(lm);
+  // Slow bearing drift while dwelling, for a cinematic feel
+  map.once('moveend', () => {
+    if (touring) {
+      map.easeTo({
+        bearing: map.getBearing() + 25,
+        duration: TOUR_STOP_MS - 3500,
+        easing: (t) => t,
+      });
+    }
+  });
+  tourTimer = setTimeout(visitNextStop, TOUR_STOP_MS);
+}
+
+function startTour() {
+  touring = true;
+  tourIndex = 0;
+  tourBtn.classList.add('active');
+  tourBtn.textContent = '■ Stop Tour';
+  visitNextStop();
+}
+
+function stopTour() {
+  if (!touring) return;
+  touring = false;
+  clearTimeout(tourTimer);
+  tourBtn.classList.remove('active');
+  tourBtn.textContent = '▶ Auto Tour';
+}
+
+tourBtn.addEventListener('click', () => (touring ? stopTour() : startTour()));
 
 // ---------------------------------------------------------------- Day / night
 

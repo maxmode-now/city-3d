@@ -76,6 +76,30 @@ body {
   margin-bottom: 10px;
 }
 
+#tour-btn {
+  width: 100%;
+  padding: 9px 0;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--amber);
+  background: rgba(245, 185, 66, 0.1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+#tour-btn:hover {
+  background: rgba(245, 185, 66, 0.2);
+}
+
+#tour-btn.active {
+  background: var(--amber);
+  color: #1a1205;
+}
+
 #landmark-list {
   list-style: none;
 }
