@@ -65,10 +65,16 @@ function addBuildingLayer() {
   );
   if (!sourceName) return;
 
-  // Insert below label layers so place names stay visible above buildings
-  const labelLayerId = style.layers.find(
-    (l) => l.type === 'symbol' && l.layout?.['text-field']
-  )?.id;
+  // Insert above every fill/line layer (roads, bridges) but below the trailing
+  // block of symbol layers, so nothing draws over building walls while labels
+  // stay visible
+  let labelLayerId;
+  for (let i = style.layers.length - 1; i >= 0; i--) {
+    if (style.layers[i].type !== 'symbol') {
+      labelLayerId = style.layers[i + 1]?.id;
+      break;
+    }
+  }
 
   map.addLayer(
     {
@@ -86,7 +92,8 @@ function addBuildingLayer() {
           14.5, ['coalesce', ['get', 'render_height'], 8],
         ],
         'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
-        'fill-extrusion-opacity': theme === 'night' ? 0.95 : 0.85,
+        // Fully opaque — translucent extrusions let roads show through the walls
+        'fill-extrusion-opacity': 1,
       },
     },
     labelLayerId
