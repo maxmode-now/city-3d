@@ -4,7 +4,7 @@ An **API-key-free** interactive 3D city map, built with MapLibre GL JS and OpenF
 It extrudes OSM building heights into a 3D cityscape with cinematic landmark tours and day/night modes.
 Ships with New York, Seoul, and Tokyo — and [adding your own city is a one-file edit](#-add-your-city).
 
-**Deep links:** [New York](https://maxmode-now.github.io/seoul-3d-map/) · [Seoul](https://maxmode-now.github.io/seoul-3d-map/?city=seoul) · [Tokyo](https://maxmode-now.github.io/seoul-3d-map/?city=tokyo)
+**Deep links:** [New York](https://maxmode-now.github.io/city-3d/) · [Seoul](https://maxmode-now.github.io/city-3d/?city=seoul) · [Tokyo](https://maxmode-now.github.io/city-3d/?city=tokyo)
 
 ![City 3D demo — Seoul to New York auto tour](docs/demo.gif)
 
@@ -76,7 +76,7 @@ Cities with good OSM building-height coverage (Chicago, Hong Kong, Berlin, Vanco
 
 ## 📝 About the Data
 
-Building heights come from OpenStreetMap contributor data. Major landmarks and the downtown core have accurate heights, while some buildings lack height data and render at a default height. Want to improve Seoul's building data? Consider [contributing to OpenStreetMap](https://www.openstreetmap.org).
+Building heights come from OpenStreetMap contributor data. Major landmarks and the downtown core have accurate heights, while some buildings lack height data and render at a default height. Want to improve a city's building data? Consider [contributing to OpenStreetMap](https://www.openstreetmap.org).
 
 ---
 
