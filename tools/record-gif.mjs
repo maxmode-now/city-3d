@@ -11,7 +11,8 @@ import gifenc from 'gifenc';
 
 const { GIFEncoder, quantize, applyPalette } = gifenc;
 
-const URL = process.env.DEMO_URL ?? 'http://localhost:5173/';
+// The choreography starts from Seoul, so load it explicitly (default city is NYC)
+const URL = process.env.DEMO_URL ?? 'http://localhost:5173/?city=seoul';
 const OUT = process.env.OUT ?? 'docs/demo.gif';
 const WIDTH = 720;
 const HEIGHT = 450;

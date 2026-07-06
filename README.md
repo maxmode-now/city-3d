@@ -1,17 +1,17 @@
-# 🏙️ City 3D — Seoul · New York
+# 🏙️ City 3D — New York · Seoul · Tokyo
 
 An **API-key-free** interactive 3D city map, built with MapLibre GL JS and OpenFreeMap.
 It extrudes OSM building heights into a 3D cityscape with cinematic landmark tours and day/night modes.
-Ships with Seoul and New York — and [adding your own city is a one-file edit](#-add-your-city).
+Ships with New York, Seoul, and Tokyo — and [adding your own city is a one-file edit](#-add-your-city).
 
-**Deep links:** [Seoul](https://maxmode-now.github.io/seoul-3d-map/) · [New York](https://maxmode-now.github.io/seoul-3d-map/?city=nyc)
+**Deep links:** [New York](https://maxmode-now.github.io/seoul-3d-map/) · [Seoul](https://maxmode-now.github.io/seoul-3d-map/?city=seoul) · [Tokyo](https://maxmode-now.github.io/seoul-3d-map/?city=tokyo)
 
 ![City 3D demo — Seoul to New York auto tour](docs/demo.gif)
 
 ## ✨ Features
 
-- **Multi-city** — Seoul and New York built in, switchable in the UI with shareable `?city=` deep links; add any city by editing one file
-- **3D building rendering** — fill-extrusion driven by OSM `render_height`, with a height-based color ramp (Lotte World Tower rises to its real 555 m, One WTC to 541 m)
+- **Multi-city** — New York, Seoul, and Tokyo built in, switchable in the UI with shareable `?city=` deep links; add any city by editing one file
+- **3D building rendering** — fill-extrusion driven by OSM `render_height`, with a height-based color ramp (One WTC rises to its real 541 m, Lotte World Tower to 555 m, Tokyo Skytree to 634 m)
 - **Landmark tour** — one-click cinematic fly-to with info cards for 7 landmarks per city, from Gyeongbokgung Palace to the Brooklyn Bridge
 - **Auto tour** — hit ▶ and the camera flies itself from landmark to landmark with a slow cinematic drift at each stop
 - **Camera modes** — free view / orbit (auto-rotate) / top-down
@@ -59,16 +59,16 @@ npm run build    # static build in dist/
 Everything city-specific lives in [src/cities.js](src/cities.js). Append an entry with an initial camera view and a handful of landmarks, add a button in `index.html`, and you have `?city=yours`:
 
 ```js
-tokyo: {
-  label: 'TOKYO',
-  name: 'Tokyo',
-  tagline: 'Interactive 3D Map of Tokyo',
-  view: { center: [139.7671, 35.6812], zoom: 15.2, pitch: 60, bearing: -17 },
+chicago: {
+  label: 'CHICAGO',
+  name: 'Chicago',
+  tagline: 'Interactive 3D Map of Chicago',
+  view: { center: [-87.6298, 41.8781], zoom: 15.2, pitch: 60, bearing: -17 },
   landmarks: [ /* coords, camera angle, chips, description */ ],
 },
 ```
 
-Cities with good OSM building-height coverage (New York, Tokyo, Chicago, Hong Kong, Berlin…) look best. Pull requests adding cities are welcome.
+Cities with good OSM building-height coverage (Chicago, Hong Kong, Berlin, Vancouver…) look best. Pull requests adding cities are welcome.
 
 ## 📸 Screenshot
 
